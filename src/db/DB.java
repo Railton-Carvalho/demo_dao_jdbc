@@ -1,4 +1,6 @@
-import Exces.DbException;
+package db;
+
+import db.DbException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -37,7 +39,7 @@ public class DB {
         if(conn!=null){
             try {
                 conn.close();
-                System.out.println("DB CLOSED");
+                System.out.println("db.DB CLOSED");
             } catch (SQLException e) {
                 throw new DbException(e.getMessage());
             }
