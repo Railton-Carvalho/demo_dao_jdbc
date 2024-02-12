@@ -13,7 +13,9 @@ public class Program {
     public static void main(String[] args) {
 
         SellerDao sellerDao = DaoFactory.createSellerDao();
-        
+
+        System.out.println("-> (Seller) findById TEST <-");
+
         Seller cobaia = sellerDao.findById(3);
 
         System.out.println(cobaia.toString());

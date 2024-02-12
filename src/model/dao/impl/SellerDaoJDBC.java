@@ -39,7 +39,6 @@ public class SellerDaoJDBC implements SellerDao {
         PreparedStatement pst = null;
         ResultSet rs = null;
         try{
-            conn = DB.getConnection();
             pst = conn.prepareStatement(
                     "SELECT seller.*, department.Name as DepName FROM seller INNER JOIN department ON seller.DepartmentId = department.Id WHERE seller.Id = ?");
 
@@ -47,18 +46,8 @@ public class SellerDaoJDBC implements SellerDao {
             rs = pst.executeQuery();
 
             if(rs.next()){
-                Department dep = new Department();
-                dep.setId(rs.getInt("DepartmentId"));
-                dep.setName(rs.getString("DepName"));
-
-                String name = rs.getString("Name");
-                String email = rs.getString("Email");
-                Date date = rs.getDate("BirthDate");
-                Double BaseSalary =  rs.getDouble("BaseSalary");
-
-                Seller seller =  new Seller(rs.getInt("Id"), name, email, date, BaseSalary);
-                seller.setDepartment(dep);
-
+                Department dep = instantiateDepartment(rs);
+                Seller seller = instantiateSeller(rs, dep);
                 return seller;
             }
             return null;
@@ -69,6 +58,25 @@ public class SellerDaoJDBC implements SellerDao {
             //a conexão conn não é fechada pq precisamos dela pra as outras operações
         }
     }
+
+    private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException{
+        String name = rs.getString("Name");
+        String email = rs.getString("Email");
+        Date date = rs.getDate("BirthDate");
+        Double BaseSalary =  rs.getDouble("BaseSalary");
+
+        Seller seller =  new Seller(rs.getInt("Id"), name, email, date, BaseSalary);
+        seller.setDepartment(dep);
+        return  seller;
+    }
+
+    private Department instantiateDepartment(ResultSet rs) throws SQLException {
+        Department dep = new Department();
+        dep.setId(rs.getInt("DepartmentId"));
+        dep.setName(rs.getString("DepName"));
+        return dep;
+    }
+
     @Override
     public List<Seller> findAll() {
         return null;

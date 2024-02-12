@@ -49,7 +49,7 @@ public class DB {
         if(st != null){
             try {
                 st.close();
-                System.out.println("ST CLOSED");
+                System.out.println("Statement CLOSED!");
 
             }catch (SQLException e){
                 throw new DbException(e.getMessage());
@@ -60,7 +60,7 @@ public class DB {
     public static void closeResultSet(ResultSet rs) {
         if (rs != null){
             try {
-                rs.close();System.out.println("RS CLOSED");
+                rs.close();System.out.println("ResultSet CLOSED!");
             }catch (SQLException e){
                 throw new DbException(e.getMessage());
             }
