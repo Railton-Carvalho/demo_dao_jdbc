@@ -39,7 +39,7 @@ public class DB {
         if(conn!=null){
             try {
                 conn.close();
-                System.out.println("db.DB CLOSED");
+                //System.out.println("db.DB CLOSED");
             } catch (SQLException e) {
                 throw new DbException(e.getMessage());
             }
@@ -49,7 +49,7 @@ public class DB {
         if(st != null){
             try {
                 st.close();
-                System.out.println("Statement CLOSED!");
+                //System.out.println("Statement CLOSED!");
 
             }catch (SQLException e){
                 throw new DbException(e.getMessage());
