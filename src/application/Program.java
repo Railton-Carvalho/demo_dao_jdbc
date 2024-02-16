@@ -39,8 +39,12 @@ public class Program {
 
         System.out.println("\n-> (Seller) insert TEST 5 <-");
         Department dp = new Department("Fashion",3);
-        Seller sl = new Seller(null,"Thiago","thiagoalca@yahoo.com",new Date(),4150.0);
+        Seller sl = new Seller(35,"Thiago","thiagoalca@gmail.com",new Date(),5120.0);
         sl.setDepartment(dp);
-        sellerDao.insert(sl);
+        //sellerDao.insert(sl);
+
+        System.out.println("\n-> (Seller) update TEST 6 <-");
+        sellerDao.update(sl);
+
     }
 }

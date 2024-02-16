@@ -2,6 +2,7 @@ package model.dao.impl;
 
 import db.DB;
 import db.DbException;
+import db.DbIntegrityException;
 import model.dao.SellerDao;
 import model.entities.Department;
 import model.entities.Seller;
@@ -36,7 +37,7 @@ public class SellerDaoJDBC implements SellerDao {
                 rs = ps.getGeneratedKeys();
                 if (rs.next()){
                     obj.setId(rs.getInt(1));
-                    System.out.println("Done! Id: "+obj.getId());
+                    System.out.println("Insert Done! Id: "+obj.getId());
                 }
             }else{
                 throw new DbException("Unexpected ERROR! no rows affected");
@@ -50,7 +51,31 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public void update(Seller obj) {
+        ResultSet rs = null;
+        PreparedStatement pst  =null;
+        try{
+            pst = conn.prepareStatement("UPDATE seller\n" +
+                    "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ?\n" +
+                    "WHERE Id = ?");
+            pst.setString(1,obj.getName());
+            pst.setString(2,obj.getEmail());
+            pst.setDate(3,new java.sql.Date(obj.getBithDate().getTime()));
+            pst.setDouble(4, obj.getBaseSalary());
+            pst.setInt(5,obj.getDepartment().getId());
+            pst.setInt(6, obj.getId());
 
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected > 0){
+                System.out.println("Update Done! rowsAffected: "+rowsAffected);
+            }else{
+                System.out.println("Unexpected ERROR! no rows affected");
+            }
+
+        }catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }finally {
+            DB.closeStatement(pst);
+        }
     }
 
     @Override
@@ -145,6 +170,8 @@ public class SellerDaoJDBC implements SellerDao {
             return sellers;
         }catch (SQLException e){
             throw new DbException(e.getMessage());
+        }finally {
+            DB.closeStatement(st);
         }
     }
     private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException{
