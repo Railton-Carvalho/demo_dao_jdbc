@@ -9,9 +9,12 @@ import model.entities.Seller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 public class Program {
+
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
         SellerDao sellerDao = DaoFactory.createSellerDao();
         DepartmentDao depDao = DaoFactory.createDepartmentDao();
@@ -39,12 +42,17 @@ public class Program {
 
         System.out.println("\n-> (Seller) insert TEST 5 <-");
         Department dp = new Department("Fashion",3);
-        Seller sl = new Seller(35,"Thiago","thiagoalca@gmail.com",new Date(),5120.0);
+        Seller sl = new Seller(null,"Thiago","thiagoalca@gmail.com",new Date(),5120.0);
         sl.setDepartment(dp);
-        //sellerDao.insert(sl);
+        sellerDao.insert(sl);
 
         System.out.println("\n-> (Seller) update TEST 6 <-");
         sellerDao.update(sl);
+
+        System.out.println("\n-> (Seller) delete TEST 7 <-");
+        System.out.print("Enter with the Id to delele: ");
+        int id = sc.nextInt();
+        sellerDao.deleleById(id);
 
     }
 }

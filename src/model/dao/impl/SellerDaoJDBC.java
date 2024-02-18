@@ -51,7 +51,6 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public void update(Seller obj) {
-        ResultSet rs = null;
         PreparedStatement pst  =null;
         try{
             pst = conn.prepareStatement("UPDATE seller\n" +
@@ -79,8 +78,25 @@ public class SellerDaoJDBC implements SellerDao {
     }
 
     @Override
-    public void deleleById(Seller id) {
+    public void deleleById(Integer id) {
+        PreparedStatement pst = null;
+        try{
+            pst = conn.prepareStatement("DELETE FROM seller\n" +
+                    "WHERE Id = ?");
+            pst.setInt(1, id);
 
+            int rowsAffected = pst.executeUpdate();
+
+            if (rowsAffected > 0){
+                System.out.println("Delete Done! Id: "+id);
+            }else{
+                System.out.println("Error UnknowId !");
+            }
+        }catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }finally {
+            DB.closeStatement(pst);
+        }
     }
 
     @Override
